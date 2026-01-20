@@ -85,15 +85,15 @@ export function Footer() {
             <h4 className="mb-4 font-heading text-lg font-semibold">Contact Us</h4>
             <ul className="space-y-3">
               <li className="flex items-center gap-3 text-sm text-secondary-foreground/70">
-                <Mail className="h-4 w-4 text-primary" />
+                <Mail className="h-4 w-4 text-[#ffffff]" />
                 <span>partners@callaxtra.com</span>
               </li>
               <li className="flex items-center gap-3 text-sm text-secondary-foreground/70">
-                <Mail className="h-4 w-4 text-primary" />
+                <Mail className="h-4 w-4 text-[#ffffff]" />
                 <span>info@callaxtra.com</span>
               </li>
               <li className="flex items-start gap-3 text-sm text-secondary-foreground/70">
-                <MapPin className="h-4 w-4 mt-0.5 text-primary" />
+                <MapPin className="h-4 w-4 mt-0.5 text-[#ffffff]" />
                 <div>
                   <p className="font-medium text-secondary-foreground">CALLAXTRA MARKETING LLC</p>
                   <p>7901 4TH ST N</p>
