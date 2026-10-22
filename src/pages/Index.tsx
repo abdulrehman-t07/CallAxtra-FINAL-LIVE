@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { SEO } from "@/components/shared/SEO";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { FeatureCard } from "@/components/shared/FeatureCard";
 import { StatCounter } from "@/components/shared/StatCounter";
@@ -115,7 +116,7 @@ const agentFeatures = [
 
 const trustBadges = ["TCPA Compliant", "CMS Approved", "U.S. Based"];
 
-const verticals = ["Medicare Advantage", "Final Expense", "Healthcare & Life", "Financial Services"];
+const verticals = ["Medicare Advantage", "Final Expense", "CGM (Glucose)", "Pharmacy & DME"];
 
 const initials = (name: string) =>
   name
@@ -129,6 +130,12 @@ const Index = () => {
 
   return (
     <Layout>
+      <SEO
+        title="CallAxtra | High-Quality Live Transfers & Compliant Lead Generation"
+        description="Connect with verified, conversion-ready prospects in Medicare, Final Expense, CGM (Continuous Glucose Monitors), Pharmacy, and DME campaigns. TCPA and CMS compliant live transfers."
+        keywords="live transfers, buy live transfers, Medicare live transfers, final expense live transfers, continuous glucose monitors CGM, pharmacy DME leads, insurance transfers"
+        canonicalPath="/"
+      />
       {/* Hero Section — Staged with ambient depth & clear contrast */}
       <section className="relative overflow-hidden bg-gradient-to-b from-muted/50 via-background to-background pt-12 pb-16 md:pt-16 md:pb-20 lg:pt-20 lg:pb-24 border-b border-border/80">
         {/* Ambient background glows */}

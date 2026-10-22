@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
+import { SEO } from "@/components/shared/SEO";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Button } from "@/components/ui/button";
 import { ContactForm } from "@/components/shared/ContactForm";
@@ -219,6 +220,12 @@ const Services = () => {
 
   return (
     <Layout>
+      <SEO
+        title="Live Transfers & Lead Generation Services | Medicare, CGM, Insurance"
+        description="Explore CallAxtra's specialized live transfers, compliant lead generation, and dedicated call center solutions across Medicare, Final Expense, CGM, Pharmacy & DME."
+        keywords="Medicare live transfers, final expense transfers, continuous glucose monitors CGM leads, pharmacy DME leads, insurance lead generation services"
+        canonicalPath="/services"
+      />
       {/* Hero */}
       <PageHero
         image={serviceHeroImg}

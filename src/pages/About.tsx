@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
+import { SEO } from "@/components/shared/SEO";
 import { Button } from "@/components/ui/button";
 import { PageHero } from "@/components/shared/PageHero";
 import { Link } from "react-router-dom";
@@ -27,6 +28,12 @@ const facts = [
 const About = () => {
   return (
     <Layout>
+      <SEO
+        title="About CallAxtra | U.S.-Registered Live Transfer & Marketing Agency"
+        description="Learn about CallAxtra Marketing LLC, our dedicated BPO call center, compliance standards, and mission to deliver conversion-focused live transfers."
+        keywords="about CallAxtra, US marketing agency, compliant call center, BPO lead generation, live transfer agency"
+        canonicalPath="/about"
+      />
       {/* Hero */}
       <PageHero
         image={aboutHeroImg}

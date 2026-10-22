@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
+import { SEO } from "@/components/shared/SEO";
 import { ContactForm } from "@/components/shared/ContactForm";
 import { PageHero } from "@/components/shared/PageHero";
 import { Mail, MapPin, Phone, ShieldCheck, Clock } from "lucide-react";
@@ -41,6 +42,12 @@ const highlights = [
 const Contact = () => {
   return (
     <Layout>
+      <SEO
+        title="Contact CallAxtra | Request Live Transfers Quote & Campaign Consultation"
+        description="Contact our campaign specialists to start a Medicare, Final Expense, CGM, Pharmacy, or insurance live transfer campaign. Fast 24-hour turnaround."
+        keywords="contact CallAxtra, request live transfers quote, buy Medicare leads contact, insurance call center consultation"
+        canonicalPath="/contact"
+      />
       {/* Hero */}
       <PageHero
         image={contactHeroImg}

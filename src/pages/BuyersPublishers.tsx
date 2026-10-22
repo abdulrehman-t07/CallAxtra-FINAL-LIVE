@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
+import { SEO } from "@/components/shared/SEO";
 import { Button } from "@/components/ui/button";
 import { ContactForm } from "@/components/shared/ContactForm";
 import { PageHero } from "@/components/shared/PageHero";
@@ -62,6 +63,12 @@ const BuyersPublishers = () => {
 
   return (
     <Layout>
+      <SEO
+        title="Buy Live Transfers or Monetize Traffic | Buyers & Publishers"
+        description="Buy verified, intent-driven Medicare, final expense, and healthcare live transfers or monetize your web and call traffic with weekly payouts and transparent reporting."
+        keywords="buy live transfers, publisher traffic monetization, pay per call, buy Medicare calls, insurance buyer network, call traffic affiliate"
+        canonicalPath="/buyers-publishers"
+      />
       {/* Hero */}
       <PageHero
         image={buyersPublishersHeroImg}
