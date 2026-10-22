@@ -13,7 +13,7 @@ export function Layout({ children }: LayoutProps) {
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
-      <WhatsAppButton phoneNumber="1234567890" />
+      <WhatsAppButton phoneNumber="+17602630555" />
     </div>
   );
 }

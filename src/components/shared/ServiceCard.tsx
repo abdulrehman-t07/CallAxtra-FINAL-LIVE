@@ -22,15 +22,15 @@ export function ServiceCard({
   return (
     <div
       className={cn(
-        "group relative overflow-hidden rounded-xl border border-border bg-card p-6 shadow-card transition-all duration-300 hover:shadow-card-hover",
+        "group relative overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-card transition-all duration-300 hover:border-foreground/20 hover:shadow-card-hover",
         className
       )}
     >
-      <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-primary-light opacity-50 transition-transform duration-300 group-hover:scale-150" />
+      <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-muted transition-transform duration-300 group-hover:scale-150" />
       
       <div className="relative">
-        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl gradient-hero">
-          <Icon className="h-7 w-7 text-primary-foreground" />
+        <div className="icon-tile mb-4 h-14 w-14 rounded-xl">
+          <Icon className="h-7 w-7" />
         </div>
         
         <h3 className="mb-2 font-heading text-xl font-semibold text-foreground">
@@ -44,8 +44,10 @@ export function ServiceCard({
         {features.length > 0 && (
           <>
             <button
+              type="button"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="mt-4 flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-primary/80"
+              aria-expanded={isExpanded}
+              className="mt-4 flex items-center gap-1 text-sm font-semibold text-foreground transition-colors hover:text-foreground/70"
             >
               {isExpanded ? "Show Less" : "Learn More"}
               <ChevronRight
@@ -63,7 +65,7 @@ export function ServiceCard({
                     key={index}
                     className="flex items-start gap-2 text-sm text-muted-foreground"
                   >
-                    <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-secondary" />
+                    <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-foreground/60" />
                     {feature}
                   </li>
                 ))}

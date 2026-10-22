@@ -16,24 +16,29 @@ export function FeatureCard({
   variant = "default",
   className,
 }: FeatureCardProps) {
-  const iconBgStyles = {
-    default: "bg-muted text-primary",
-    primary: "bg-primary-light text-primary",
-    secondary: "bg-secondary-light text-secondary",
-    accent: "bg-accent-light text-accent",
+  // "primary" uses the high-contrast inverted tile; the others use a soft tile.
+  const iconStyles = {
+    default: "icon-tile-soft",
+    primary: "icon-tile",
+    secondary: "icon-tile-soft",
+    accent: "icon-tile-soft",
   };
 
   return (
     <div
       className={cn(
-        "group rounded-xl border border-border bg-card p-6 shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1",
+        "group relative h-full overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-foreground/20 hover:shadow-card-hover",
         className
       )}
     >
       <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-foreground/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        aria-hidden
+      />
+      <div
         className={cn(
-          "mb-4 flex h-12 w-12 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110",
-          iconBgStyles[variant]
+          "mb-5 h-12 w-12 transition-transform duration-300 group-hover:scale-105",
+          iconStyles[variant]
         )}
       >
         <Icon className="h-6 w-6" />
@@ -41,7 +46,7 @@ export function FeatureCard({
       <h3 className="mb-2 font-heading text-lg font-semibold text-foreground">
         {title}
       </h3>
-      <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
+      <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
     </div>
   );
 }

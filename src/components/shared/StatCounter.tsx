@@ -11,14 +11,11 @@ export const StatCounter = ({ value, suffix = "", prefix = "", label }: StatCoun
   const { ref, display } = useCountUp({ end: value, suffix, prefix, duration: 2000 });
 
   return (
-    <div
-      ref={ref}
-      className="rounded-xl border border-border bg-card p-6 text-center shadow-card transition-all duration-300 hover:shadow-card-hover"
-    >
-      <p className="font-heading text-4xl font-bold text-primary">
+    <div ref={ref} className="px-4 py-7 text-center">
+      <p className="font-heading text-4xl font-extrabold tracking-tight text-foreground tabular-nums md:text-5xl">
         {display}
       </p>
-      <p className="mt-1 text-sm text-muted-foreground">
+      <p className="mt-2 text-sm font-medium text-muted-foreground">
         {label}
       </p>
     </div>

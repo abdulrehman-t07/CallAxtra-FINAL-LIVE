@@ -1,52 +1,37 @@
 import { Moon, Sun } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useEffect, useState, useLayoutEffect } from "react";
+import { useTheme } from "@/hooks/use-theme";
+import { cn } from "@/lib/utils";
 
-// Force light mode immediately before React hydrates
-if (typeof window !== 'undefined') {
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme !== "dark") {
-    document.documentElement.classList.remove("dark");
-    localStorage.setItem("theme", "light");
-  }
+interface ThemeToggleProps {
+  className?: string;
 }
 
-export function ThemeToggle() {
-  const [isDark, setIsDark] = useState(false);
-
-  useLayoutEffect(() => {
-      const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-      setIsDark(true);
-      document.documentElement.classList.add("dark");
-    } else {
-  
-      setIsDark(false);
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    const newIsDark = !isDark;
-    setIsDark(newIsDark);
-    document.documentElement.classList.toggle("dark", newIsDark);
-    localStorage.setItem("theme", newIsDark ? "dark" : "light");
-  };
+export function ThemeToggle({ className }: ThemeToggleProps) {
+  const { isDark, toggleTheme } = useTheme();
 
   return (
-    <Button
-      variant="ghost"
-      size="icon"
+    <button
+      type="button"
       onClick={toggleTheme}
-      className="h-9 w-9 rounded-full"
-      aria-label="Toggle theme"
-    >
-      {isDark ? (
-        <Sun className="h-5 w-5 text-foreground" />
-      ) : (
-        <Moon className="h-5 w-5 text-foreground" />
+      className={cn(
+        "relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        className,
       )}
-    </Button>
+      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      title={isDark ? "Light mode" : "Dark mode"}
+    >
+      <Sun
+        className={cn(
+          "absolute h-[18px] w-[18px] transition-all duration-300",
+          isDark ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0",
+        )}
+      />
+      <Moon
+        className={cn(
+          "absolute h-[18px] w-[18px] transition-all duration-300",
+          isDark ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100",
+        )}
+      />
+    </button>
   );
 }

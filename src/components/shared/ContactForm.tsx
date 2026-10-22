@@ -44,22 +44,18 @@ export function ContactForm({ formType, onSuccess, actionUrl }: ContactFormProps
     e.preventDefault();
     setIsSubmitting(true);
 
-    // If actionUrl is provided, submit to Formspree
-
-    if(formType == "buyer"){
-      actionUrl= "https://formspree.io/f/mbdlnpyk";
-    }
-    else if(formType == "publisher"){
-      actionUrl = "https://formspree.io/f/xpqqzver";
-    }
-    else{
-      actionUrl = "https://formspree.io/f/xkoondaz";
+    let targetUrl = actionUrl;
+    if (formType === "buyer") {
+      targetUrl = "https://formspree.io/f/mbdlnpyk";
+    } else if (formType === "publisher") {
+      targetUrl = "https://formspree.io/f/xpqqzver";
+    } else {
+      targetUrl = "https://formspree.io/f/xkoondaz";
     }
 
-    
-    if (actionUrl) {
+    if (targetUrl) {
       try {
-        const response = await fetch(actionUrl, {
+        const response = await fetch(targetUrl, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -75,8 +71,8 @@ export function ContactForm({ formType, onSuccess, actionUrl }: ContactFormProps
         if (response.ok) {
           setIsSubmitted(true);
           toast({
-            title: "Message Sent Successfully!",
-            description: "We'll get back to you within one business day.",
+            title: "Inquiry Sent Successfully!",
+            description: "A specialist will be in touch within one business day.",
           });
           onSuccess?.();
         } else {
@@ -85,17 +81,16 @@ export function ContactForm({ formType, onSuccess, actionUrl }: ContactFormProps
       } catch {
         toast({
           title: "Submission Failed",
-          description: "Please try again or contact us directly.",
+          description: "Please try again or contact us directly at partners@callaxtra.com.",
           variant: "destructive",
         });
       }
     } else {
-      // Simulate form submission for demo
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       setIsSubmitted(true);
       toast({
-        title: "Message Sent Successfully!",
-        description: "We'll get back to you within one business day.",
+        title: "Inquiry Sent Successfully!",
+        description: "A specialist will be in touch within one business day.",
       });
       onSuccess?.();
     }
@@ -126,22 +121,22 @@ export function ContactForm({ formType, onSuccess, actionUrl }: ContactFormProps
   };
 
   const formDescriptions = {
-    general: "Ready to start your campaign? Tell us about your goals and we'll propose a tailored plan.",
-    buyer: "Tell us about your lead needs and we'll create a custom solution.",
-    publisher: "Partner with us to sell calls and maximize your revenue with transparent payouts and reliable delivery.",
+    general: "Tell us about your campaign goals and we'll propose a tailored, compliant solution.",
+    buyer: "Specify your lead vertical, filters, and target volume to get customized pricing.",
+    publisher: "Monetize your qualified calls and web traffic with transparent weekly payouts.",
   };
 
   if (isSubmitted) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
-        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary-light">
-          <CheckCircle2 className="h-8 w-8 text-primary" />
+        <div className="icon-tile mb-5 h-16 w-16 rounded-2xl shadow-md">
+          <CheckCircle2 className="h-8 w-8" />
         </div>
-        <h3 className="font-heading text-xl font-semibold text-foreground">
+        <h3 className="font-heading text-2xl font-bold text-foreground">
           Thank You!
         </h3>
-        <p className="mt-2 text-muted-foreground">
-          Your request has been received. A campaign specialist will contact you within one business day.
+        <p className="mt-2 max-w-sm text-sm text-muted-foreground leading-relaxed">
+          Your request has been securely delivered. A dedicated specialist will contact you within one business day.
         </p>
       </div>
     );
@@ -150,17 +145,19 @@ export function ContactForm({ formType, onSuccess, actionUrl }: ContactFormProps
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="mb-6">
-        <h3 className="font-heading text-xl font-semibold text-foreground">
+        <h3 className="font-heading text-xl font-bold tracking-tight text-foreground sm:text-2xl">
           {formTitles[formType]}
         </h3>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">
           {formDescriptions[formType]}
         </p>
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="name">Name *</Label>
+          <Label htmlFor="name" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Full Name <span className="text-foreground">*</span>
+          </Label>
           <Input
             id="name"
             name="name"
@@ -168,10 +165,13 @@ export function ContactForm({ formType, onSuccess, actionUrl }: ContactFormProps
             onChange={handleChange}
             placeholder="John Smith"
             required
+            className="h-11 bg-background"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="email">Email *</Label>
+          <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Work Email <span className="text-foreground">*</span>
+          </Label>
           <Input
             id="email"
             name="email"
@@ -180,23 +180,29 @@ export function ContactForm({ formType, onSuccess, actionUrl }: ContactFormProps
             onChange={handleChange}
             placeholder="john@company.com"
             required
+            className="h-11 bg-background"
           />
         </div>
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="company">Company</Label>
+          <Label htmlFor="company" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Company Name
+          </Label>
           <Input
             id="company"
             name="company"
             value={formData.company}
             onChange={handleChange}
             placeholder="Your Company"
+            className="h-11 bg-background"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="phone">Phone</Label>
+          <Label htmlFor="phone" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Phone Number
+          </Label>
           <Input
             id="phone"
             name="phone"
@@ -204,6 +210,7 @@ export function ContactForm({ formType, onSuccess, actionUrl }: ContactFormProps
             value={formData.phone}
             onChange={handleChange}
             placeholder="(555) 000-0000"
+            className="h-11 bg-background"
           />
         </div>
       </div>
@@ -211,55 +218,66 @@ export function ContactForm({ formType, onSuccess, actionUrl }: ContactFormProps
       {/* General and Buyer fields */}
       {(formType === "general" || formType === "buyer") && (
         <>
-          <div className="grid gap-5 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="campaignType">Campaign Type</Label>
+              <Label htmlFor="campaignType" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Campaign Type
+              </Label>
               <Select
                 value={formData.campaignType}
                 onValueChange={(value) => handleSelectChange("campaignType", value)}
               >
-                <SelectTrigger>
+                <SelectTrigger id="campaignType" className="h-11 bg-background">
                   <SelectValue placeholder="Select type" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="live-transfers">Live Transfers</SelectItem>
-                  <SelectItem value="leads">Leads</SelectItem>
-                  <SelectItem value="call-center">Call Center</SelectItem>
-                  <SelectItem value="custom">Custom</SelectItem>
+                  <SelectItem value="leads">Lead Generation</SelectItem>
+                  <SelectItem value="call-center">Call Center Staffing</SelectItem>
+                  <SelectItem value="custom">Custom Campaign</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="targetVertical">Target Vertical</Label>
+              <Label htmlFor="targetVertical" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Target Vertical
+              </Label>
               <Input
                 id="targetVertical"
                 name="targetVertical"
                 value={formData.targetVertical}
                 onChange={handleChange}
                 placeholder="e.g., Medicare, Final Expense"
+                className="h-11 bg-background"
               />
             </div>
           </div>
-          <div className="grid gap-5 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="monthlyVolume">Estimated Monthly Volume</Label>
+              <Label htmlFor="monthlyVolume" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Estimated Volume
+              </Label>
               <Input
                 id="monthlyVolume"
                 name="monthlyVolume"
                 value={formData.monthlyVolume}
                 onChange={handleChange}
                 placeholder="e.g., 500+ calls/month"
+                className="h-11 bg-background"
               />
             </div>
             {formType === "buyer" && (
               <div className="space-y-2">
-                <Label htmlFor="desiredStartDate">Desired Start Date</Label>
+                <Label htmlFor="desiredStartDate" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Desired Start Date
+                </Label>
                 <Input
                   id="desiredStartDate"
                   name="desiredStartDate"
                   value={formData.desiredStartDate}
                   onChange={handleChange}
-                  placeholder="e.g., ASAP, Next month"
+                  placeholder="e.g., Immediately, Next week"
+                  className="h-11 bg-background"
                 />
               </div>
             )}
@@ -270,72 +288,88 @@ export function ContactForm({ formType, onSuccess, actionUrl }: ContactFormProps
       {/* Publisher specific fields */}
       {formType === "publisher" && (
         <>
-          <div className="grid gap-5 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="website">Website / Traffic Source</Label>
+              <Label htmlFor="website" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Website / Traffic Source
+              </Label>
               <Input
                 id="website"
                 name="website"
                 value={formData.website}
                 onChange={handleChange}
                 placeholder="https://yoursite.com"
+                className="h-11 bg-background"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="geography">Geography</Label>
+              <Label htmlFor="geography" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Geography
+              </Label>
               <Input
                 id="geography"
                 name="geography"
                 value={formData.geography}
                 onChange={handleChange}
                 placeholder="e.g., United States"
+                className="h-11 bg-background"
               />
             </div>
           </div>
-          <div className="grid gap-5 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="trafficType">Traffic Type</Label>
+              <Label htmlFor="trafficType" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Traffic Channel
+              </Label>
               <Select
                 value={formData.trafficType}
                 onValueChange={(value) => handleSelectChange("trafficType", value)}
               >
-                <SelectTrigger>
+                <SelectTrigger id="trafficType" className="h-11 bg-background">
                   <SelectValue placeholder="Select type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="call">Call</SelectItem>
-                  <SelectItem value="web">Web</SelectItem>
-                  <SelectItem value="mobile">Mobile</SelectItem>
+                  <SelectItem value="call">Inbound Calls</SelectItem>
+                  <SelectItem value="web">Web Forms / Landing Pages</SelectItem>
+                  <SelectItem value="mobile">Mobile Search / Click-to-Call</SelectItem>
                   <SelectItem value="other">Other</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="monthlyVolume">Average Monthly Volume</Label>
+              <Label htmlFor="monthlyVolume" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Monthly Volume
+              </Label>
               <Input
                 id="monthlyVolume"
                 name="monthlyVolume"
                 value={formData.monthlyVolume}
                 onChange={handleChange}
                 placeholder="e.g., 1,000+ leads/month"
+                className="h-11 bg-background"
               />
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="payoutExpectations">Payout Expectations</Label>
+            <Label htmlFor="payoutExpectations" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Payout Expectations
+            </Label>
             <Input
               id="payoutExpectations"
               name="payoutExpectations"
               value={formData.payoutExpectations}
               onChange={handleChange}
-              placeholder="e.g., $XX per call"
+              placeholder="e.g., Target CPL or CPA"
+              className="h-11 bg-background"
             />
           </div>
         </>
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="message">Message</Label>
+        <Label htmlFor="message" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          Additional Details
+        </Label>
         <Textarea
           id="message"
           name="message"
@@ -343,12 +377,13 @@ export function ContactForm({ formType, onSuccess, actionUrl }: ContactFormProps
           onChange={handleChange}
           placeholder={
             formType === "buyer"
-              ? "Describe your target audience, preferred call hours, and any specific requirements..."
+              ? "Describe target demographics, states, hours of operation, and qualification criteria..."
               : formType === "publisher"
-              ? "Describe your traffic sources, lead quality, and current monetization methods..."
-              : "Tell us about your goals and requirements..."
+              ? "Describe traffic sources, current volume, and primary verticals..."
+              : "Tell us about your requirements, timeline, and questions..."
           }
           rows={4}
+          className="bg-background resize-none"
         />
       </div>
 
@@ -356,22 +391,22 @@ export function ContactForm({ formType, onSuccess, actionUrl }: ContactFormProps
         type="submit"
         variant="cta"
         size="lg"
-        className="w-full"
+        className="w-full h-12"
         disabled={isSubmitting}
       >
         {isSubmitting ? (
           <>
             <Loader2 className="h-4 w-4 animate-spin" />
-            Sending...
+            Submitting Inquiry...
           </>
         ) : (
           <>
             <Send className="h-4 w-4" />
             {formType === "buyer"
-              ? "Request Quote"
+              ? "Request Buyer Quote"
               : formType === "publisher"
-              ? "Become a Publisher"
-              : "Let's Start Your Campaign"}
+              ? "Submit Publisher Application"
+              : "Submit Inquiry"}
           </>
         )}
       </Button>

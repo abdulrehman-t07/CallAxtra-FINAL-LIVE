@@ -3,6 +3,8 @@ import { Layout } from "@/components/layout/Layout";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Button } from "@/components/ui/button";
 import { ContactForm } from "@/components/shared/ContactForm";
+import { PageHero } from "@/components/shared/PageHero";
+import { CtaBand } from "@/components/shared/CtaBand";
 import {
   Dialog,
   DialogContent,
@@ -17,8 +19,8 @@ import {
   Headphones,
   Network,
   ArrowRight,
+  ArrowUpRight,
   CheckCircle2,
-  X,
 } from "lucide-react";
 
 // Import service images
@@ -33,17 +35,26 @@ interface ServiceModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
+  image?: string;
   children: React.ReactNode;
 }
 
-function ServiceModal({ isOpen, onClose, title, children }: ServiceModalProps) {
+function ServiceModal({ isOpen, onClose, title, image, children }: ServiceModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="font-heading text-2xl">{title}</DialogTitle>
-        </DialogHeader>
-        {children}
+      <DialogContent className="max-h-[90vh] max-w-2xl gap-0 overflow-y-auto p-0">
+        {image && (
+          <div className="relative h-40 w-full overflow-hidden sm:rounded-t-lg">
+            <img src={image} alt="" className="h-full w-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+          </div>
+        )}
+        <div className="px-6 pb-6 sm:px-8 sm:pb-8">
+          <DialogHeader className={image ? "-mt-6 relative" : "pt-6"}>
+            <DialogTitle className="font-heading text-2xl">{title}</DialogTitle>
+          </DialogHeader>
+          {children}
+        </div>
       </DialogContent>
     </Dialog>
   );
@@ -169,6 +180,32 @@ const services = [
   },
 ];
 
+/** Reusable block for a titled checklist inside the service modal */
+function CheckList({ title, items }: { title: string; items: string[] }) {
+  return (
+    <div>
+      <h4 className="mb-3 font-semibold text-foreground">{title}</h4>
+      <ul className="space-y-2.5">
+        {items.map((item, index) => (
+          <li key={index} className="flex items-start gap-2.5 text-muted-foreground">
+            <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-foreground" />
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function TextBlock({ title, text }: { title: string; text: string }) {
+  return (
+    <div>
+      <h4 className="mb-2 font-semibold text-foreground">{title}</h4>
+      <p className="leading-relaxed text-muted-foreground">{text}</p>
+    </div>
+  );
+}
+
 const Services = () => {
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
@@ -183,34 +220,16 @@ const Services = () => {
   return (
     <Layout>
       {/* Hero */}
-      <section className="relative py-20 md:py-32 overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <img 
-            src={serviceHeroImg} 
-            alt="Services hero background"
-            className="h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70" />
-        </div>
-        
-        <div className="container relative z-10">
-          <div className="mx-auto max-w-3xl text-center">
-            <span className="mb-4 inline-block rounded-full bg-primary-foreground/10 px-4 py-2 text-sm font-medium text-primary-foreground backdrop-blur-sm">
-              Our Services
-            </span>
-            <h1 className="font-heading text-4xl font-bold text-primary-foreground md:text-5xl">
-              Live Transfers, Lead Generation, Call Center Solutions
-            </h1>
-            <p className="mt-6 text-lg text-primary-foreground/80 font-semibold">
-              We offer a suite of services designed to deliver conversion-ready prospects and reliable campaign execution across healthcare, insurance, and financial verticals. Click any service tile to view details and request a tailored solution.
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        image={serviceHeroImg}
+        imageAlt="Services hero background"
+        badge="Our Services"
+        title="Live Transfers, Lead Generation, Call Center Solutions"
+        description="We offer a suite of services designed to deliver conversion-ready prospects and reliable campaign execution across healthcare, insurance, and financial verticals. Click any service tile to view details and request a tailored solution."
+      />
 
       {/* Service Tiles */}
-      <section className="py-16 md:py-24">
+      <section className="bg-section-alt py-20 md:py-28 border-b border-border">
         <div className="container">
           <SectionHeading
             badge="What We Offer"
@@ -218,38 +237,43 @@ const Services = () => {
             description="Explore our range of lead generation and call center services designed for healthcare, insurance, and financial verticals."
           />
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => (
               <button
+                type="button"
                 key={service.id}
                 onClick={() => setActiveModal(service.id)}
-                className="group relative overflow-hidden rounded-xl border border-border bg-card text-left shadow-card transition-all duration-300 hover:shadow-card-hover hover:border-primary/50"
+                className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card text-left shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-foreground/20 hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 {/* Service Image */}
-                <div className="relative h-40 w-full overflow-hidden">
-                  <img 
-                    src={service.image} 
+                <div className="relative h-48 w-full overflow-hidden">
+                  <img
+                    src={service.image}
                     alt={service.title}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
-                  <div className="absolute bottom-3 left-3 flex h-10 w-10 items-center justify-center rounded-lg gradient-hero">
-                    <service.icon className="h-5 w-5 text-primary-foreground" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/60 via-zinc-950/10 to-transparent" />
+                  <div className="absolute bottom-4 left-4 flex h-11 w-11 items-center justify-center rounded-xl bg-white text-zinc-950 shadow-lg">
+                    <service.icon className="h-5 w-5" />
+                  </div>
+                  <div className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-zinc-950 opacity-0 shadow-md transition-all duration-300 group-hover:opacity-100">
+                    <ArrowUpRight className="h-4 w-4" />
                   </div>
                 </div>
-                
-                <div className="p-5">
+
+                <div className="flex flex-1 flex-col p-6">
                   <h3 className="mb-2 font-heading text-lg font-semibold text-foreground">
                     {service.title}
                   </h3>
-                  
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+
+                  <p className="flex-1 text-sm leading-relaxed text-muted-foreground">
                     {service.description}
                   </p>
 
-                  <div className="mt-4 flex items-center gap-1 text-sm font-medium text-primary">
+                  <div className="mt-5 flex items-center gap-1.5 text-sm font-semibold text-foreground">
                     View Details
-                    <ArrowRight className="h-4 w-4" />
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </div>
                 </div>
               </button>
@@ -259,159 +283,77 @@ const Services = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-16 md:py-24">
-        <div className="container">
-          <div className="mx-auto max-w-3xl rounded-2xl gradient-hero p-8 text-center md:p-12">
-            <h2 className="font-heading text-3xl font-bold text-white md:text-4xl">
-              Ready to Get Started?
-            </h2>
-            <p className="mt-4 text-white">
-              Let's discuss how our services can help you achieve your lead
-              generation goals.
-            </p>
-            <div className="mt-8">
-              <Link to="/contact">
-                <Button variant="cta" size="lg">
-                  Contact Our Team
-                  <ArrowRight className="h-5 w-5" />
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CtaBand
+        className="pt-0 md:pt-0"
+        title="Ready to Get Started?"
+        description="Let's discuss how our services can help you achieve your lead generation goals."
+      >
+        <Button asChild variant="inverse" size="lg">
+          <Link to="/contact">
+            Contact Our Team
+            <ArrowRight className="h-5 w-5" />
+          </Link>
+        </Button>
+      </CtaBand>
 
       {/* Service Modals */}
-      {services.map((service) => (
-        <ServiceModal
-          key={service.id}
-          isOpen={activeModal === service.id}
-          onClose={() => setActiveModal(null)}
-          title={service.modalTitle}
-        >
-          <div className="space-y-6 py-4">
-            <div>
-              <h4 className="mb-2 font-semibold text-foreground">Overview</h4>
-              <p className="text-muted-foreground">{service.modalContent.overview}</p>
+      {services.map((service) => {
+        const content = service.modalContent;
+        return (
+          <ServiceModal
+            key={service.id}
+            isOpen={activeModal === service.id}
+            onClose={() => setActiveModal(null)}
+            title={service.modalTitle}
+            image={service.image}
+          >
+            <div className="space-y-6 pt-4">
+              <TextBlock title="Overview" text={content.overview} />
+
+              {"billingQuality" in content && (
+                <TextBlock title="Billing and Quality" text={content.billingQuality} />
+              )}
+
+              {"campaigns" in content && <TextBlock title="Typical Campaigns" text={content.campaigns} />}
+
+              {"features" in content && <CheckList title="What You Get" items={content.features} />}
+
+              {"sections" in content &&
+                content.sections.map((section, index) => (
+                  <CheckList key={index} title={section.title} items={section.items} />
+                ))}
+
+              {"useCases" in content && <TextBlock title="Use Cases" text={content.useCases} />}
+
+              {"capabilities" in content && <CheckList title="Capabilities" items={content.capabilities} />}
+
+              {"serviceDetails" in content && (
+                <CheckList title="Service Details" items={content.serviceDetails} />
+              )}
+
+              {"pricingModel" in content && <TextBlock title="Pricing Model" text={content.pricingModel} />}
+
+              {"howItWorks" in content && <CheckList title="How It Works" items={content.howItWorks} />}
+
+              <div className="pt-2">
+                <Button
+                  variant="cta"
+                  size="lg"
+                  className="w-full"
+                  onClick={() => handleCTAClick(content.ctaType)}
+                >
+                  {content.ctaText}
+                  <ArrowRight className="h-5 w-5" />
+                </Button>
+              </div>
             </div>
-
-            {"billingQuality" in service.modalContent && (
-              <div>
-                <h4 className="mb-2 font-semibold text-foreground">Billing and Quality</h4>
-                <p className="text-muted-foreground">{service.modalContent.billingQuality}</p>
-              </div>
-            )}
-
-            {"campaigns" in service.modalContent && (
-              <div>
-                <h4 className="mb-2 font-semibold text-foreground">Typical Campaigns</h4>
-                <p className="text-muted-foreground">{service.modalContent.campaigns}</p>
-              </div>
-            )}
-
-            {"features" in service.modalContent && (
-              <div>
-                <h4 className="mb-2 font-semibold text-foreground">What You Get</h4>
-                <ul className="space-y-2">
-                  {service.modalContent.features.map((feature, index) => (
-                    <li key={index} className="flex items-start gap-2 text-muted-foreground">
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {"sections" in service.modalContent &&
-              service.modalContent.sections.map((section, index) => (
-                <div key={index}>
-                  <h4 className="mb-2 font-semibold text-foreground">{section.title}</h4>
-                  <ul className="space-y-2">
-                    {section.items.map((item, itemIndex) => (
-                      <li key={itemIndex} className="flex items-start gap-2 text-muted-foreground">
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-
-            {"useCases" in service.modalContent && (
-              <div>
-                <h4 className="mb-2 font-semibold text-foreground">Use Cases</h4>
-                <p className="text-muted-foreground">{service.modalContent.useCases}</p>
-              </div>
-            )}
-
-            {"capabilities" in service.modalContent && (
-              <div>
-                <h4 className="mb-2 font-semibold text-foreground">Capabilities</h4>
-                <ul className="space-y-2">
-                  {service.modalContent.capabilities.map((item, index) => (
-                    <li key={index} className="flex items-start gap-2 text-muted-foreground">
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {"serviceDetails" in service.modalContent && (
-              <div>
-                <h4 className="mb-2 font-semibold text-foreground">Service Details</h4>
-                <ul className="space-y-2">
-                  {service.modalContent.serviceDetails.map((item, index) => (
-                    <li key={index} className="flex items-start gap-2 text-muted-foreground">
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {"pricingModel" in service.modalContent && (
-              <div>
-                <h4 className="mb-2 font-semibold text-foreground">Pricing Model</h4>
-                <p className="text-muted-foreground">{service.modalContent.pricingModel}</p>
-              </div>
-            )}
-
-            {"howItWorks" in service.modalContent && (
-              <div>
-                <h4 className="mb-2 font-semibold text-foreground">How It Works</h4>
-                <ul className="space-y-2">
-                  {service.modalContent.howItWorks.map((item, index) => (
-                    <li key={index} className="flex items-start gap-2 text-muted-foreground">
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <div className="pt-4">
-              <Button
-                variant="cta"
-                size="lg"
-                className="w-full"
-                onClick={() => handleCTAClick(service.modalContent.ctaType)}
-              >
-                {service.modalContent.ctaText}
-                <ArrowRight className="h-5 w-5" />
-              </Button>
-            </div>
-          </div>
-        </ServiceModal>
-      ))}
+          </ServiceModal>
+        );
+      })}
 
       {/* Form Dialog */}
       <Dialog open={showForm} onOpenChange={setShowForm}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="sr-only">
               {formType === "buyer" ? "Request a Quote" : "Contact Us"}
